@@ -32,3 +32,7 @@ Thumbs.db
 # Project-specific
 backend/uploads/*
 !backend/uploads/.gitkeep
+
+# Specifications
+*.pdf
+LMS_Assignment (1).pdf
