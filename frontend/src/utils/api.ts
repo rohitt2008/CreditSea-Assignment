@@ -64,7 +64,10 @@ async function request(method: string, endpoint: string, body?: any, isMultipart
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || data.errors?.join(', ') || 'Something went wrong');
+    const errorMsg = data.errors && data.errors.length > 0
+      ? `${data.message}\n${data.errors.join('\n')}`
+      : (data.message || 'Something went wrong');
+    throw new Error(errorMsg);
   }
 
   return data;
