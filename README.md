@@ -13,14 +13,102 @@ It provides an end-to-end sandbox representing a lending platform where borrower
 Below are the architectural and lifecycle flows designed for the LendFlow platform (configured locally):
 
 ### 1. System Architecture Flow
-![LendFlow System Architecture](./lendflow_system_architecture.svg)
+```mermaid
+flowchart TB
+    subgraph FE["🖥️ Frontend — Next.js :3000"]
+        BP["Borrower portal\nMulti-step wizard · Status tracker"]
+        OD["Operations dashboard\nSales · Sanction · Disburse · Collection"]
+    end
+
+    subgraph BE["⚙️ Backend — Express API :5001"]
+        AUTH["Auth service\nJWT · role guard"]
+        LOAN["Loan API\nCRUD · lifecycle"]
+        BRE["BRE engine\nAge · Salary · PAN · Employment"]
+        PAY["Payments API\nUTR · auto-close"]
+    end
+
+    subgraph DB["🗄️ MongoDB"]
+        U["Users\nRoles · hashed password"]
+        L["Loans\nKYC · slip path · SI calc · status"]
+        P["Payments\nUTR · amount · timestamp"]
+    end
+
+    BP -->|REST| AUTH
+    BP -->|REST| LOAN
+    BP -->|REST| BRE
+    OD -->|REST| LOAN
+    OD -->|REST| PAY
+    OD -->|REST| AUTH
+
+    AUTH --> U
+    LOAN --> L
+    LOAN --> BRE
+    PAY --> P
+    PAY -->|auto-close check| L
+```
 
 ### 2. End-to-End Loan Lifecycle
-![LendFlow Loan Lifecycle](./lendflow_loan_lifecycle.svg)
+```mermaid
+flowchart TD
+    A([Borrower registers]) --> B[Enter KYC details\nAge · Salary · PAN · Employment]
+    B --> C{BRE audit\nserver-side}
+    C -->|fail| D([❌ Blocked\nFailed rules listed])
+    C -->|pass| E[Upload salary slip\nPDF or image ≤ 5 MB]
+    E --> F[Configure loan\nAmount + tenure sliders]
+    F --> G[[PRE_APPLIED]]
+    G --> H[[APPLIED\nAwaiting review]]
+
+    H --> I[Sales exec\nreviews lead]
+    I --> J[Sanction underwriter\nreviews slip]
+    J -->|reject| K([❌ REJECTED])
+    J -->|approve| L[[SANCTIONED]]
+
+    L --> M[Disbursement officer\nreleases funds]
+    M --> N[[DISBURSED\nLoan active]]
+
+    N --> O[Collection exec\nrecords payments with UTR]
+    O --> P{Outstanding\nbalance = ₹0?}
+    P -->|no| O
+    P -->|yes| Q([✅ CLOSED\nLoan settled])
+
+    style D fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style K fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style Q fill:#dcfce7,stroke:#22c55e,color:#14532d
+    style G fill:#e0f2fe,stroke:#0ea5e9,color:#0c4a6e
+    style H fill:#e0f2fe,stroke:#0ea5e9,color:#0c4a6e
+    style L fill:#f3e8ff,stroke:#a855f7,color:#3b0764
+    style N fill:#ffedd5,stroke:#f97316,color:#7c2d12
+```
 
 ### 3. Business Rule Engine (BRE) Eligibility Flow
-![LendFlow BRE Audit Flow](./lendflow_bre_audit_flow.svg)
+```mermaid
+flowchart TD
+    START([KYC submitted]) --> R1
 
+    R1{"Age check\n23 ≤ age ≤ 50"}
+    R1 -->|fail| F1(["❌ Blocked — age out of range"])
+    R1 -->|pass| R2
+
+    R2{"Salary check\nNet ≥ ₹25,000 / month"}
+    R2 -->|fail| F2(["❌ Blocked — salary too low"])
+    R2 -->|pass| R3
+
+    R3{"PAN format\n^[A-Z]{5}[0-9]{4}[A-Z]$"}
+    R3 -->|fail| F3(["❌ Blocked — invalid PAN"])
+    R3 -->|pass| R4
+
+    R4{"Employment check\nNot unemployed"}
+    R4 -->|fail| F4(["❌ Blocked — unemployed applicant"])
+    R4 -->|pass| OK
+
+    OK(["✅ Eligible — proceed to salary slip upload"])
+
+    style F1 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style F2 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style F3 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style F4 fill:#fee2e2,stroke:#ef4444,color:#7f1d1d
+    style OK fill:#dcfce7,stroke:#22c55e,color:#14532d
+```
 ---
 
 ## 🔑 Sandbox Tester Credentials
