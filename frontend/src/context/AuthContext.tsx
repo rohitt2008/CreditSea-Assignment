@@ -80,6 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         router.push('/dashboard');
       }
 
+      setLoading(false);
       return data.user;
     } catch (error) {
       setLoading(false);
@@ -101,6 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         router.push('/dashboard');
       }
 
+      setLoading(false);
       return data.user;
     } catch (error) {
       setLoading(false);
