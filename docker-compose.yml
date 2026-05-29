@@ -8,10 +8,8 @@ services:
     container_name: lendflow-backend-api
     ports:
       - "5001:5001"
-    environment:
-      - PORT=5001
-      - MONGO_URI=mongodb+srv://rohitjamui002_db_user:EhUkRJk8IyFt7BrZ@loanmanager.dsjf8oi.mongodb.net/lendflow?appName=LoanManager
-      - JWT_SECRET=lendflow-super-secret-key-12345
+    env_file:
+      - ./backend/.env
     volumes:
       - backend-uploads:/usr/src/app/uploads
 
