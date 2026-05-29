@@ -220,6 +220,16 @@ npm run dev
 ```
 - **LendFlow Portal** will start on [http://localhost:3000](http://localhost:3000)
 
+### 5. Running with Docker Compose (Instant Sandboxed Setup)
+
+If you have Docker installed, you can skip the Node, npm, and NVM setups entirely and boot the entire fully integrated platform in a sandboxed container with a single command from your **root workspace directory**:
+
+```bash
+docker-compose up --build
+```
+- **Next.js Frontend** will immediately compile and start on [http://localhost:3000](http://localhost:3000)
+- **Express Backend API** will boot and start on [http://localhost:5001](http://localhost:5001)
+
 ---
 
 ## 📐 Schema & Architecture Specifications

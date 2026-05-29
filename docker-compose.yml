@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lendflow-backend-api
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGO_URI=mongodb+srv://rohitjamui002_db_user:EhUkRJk8IyFt7BrZ@loanmanager.dsjf8oi.mongodb.net/lendflow?appName=LoanManager
+      - JWT_SECRET=lendflow-super-secret-key-12345
+    volumes:
+      - backend-uploads:/usr/src/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lendflow-frontend-portal
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NEXT_PUBLIC_API_URL=http://localhost:5001/api
+    depends_on:
+      - backend
+
+volumes:
+  backend-uploads:
