@@ -6,6 +6,9 @@ It provides an end-to-end sandbox representing a lending platform where borrower
 
 ---
 
+<img width="196" height="150" alt="image" src="https://github.com/user-attachments/assets/6107c5ba-f1ef-4746-a2bb-4578fe0437ce" />
+
+
 ## 🔑 Sandbox Tester Credentials
 
 A database seed script automatically prepares pre-created accounts for all roles with dummy loans in various stages. 
