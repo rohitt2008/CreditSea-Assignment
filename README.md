@@ -6,17 +6,6 @@ It provides an end-to-end sandbox representing a lending platform where borrower
 
 ---
 
-## 🛠️ Technology Stack
-
-- **Monorepo Structure**: Complete workspace with separated frontend and backend services.
-- **Frontend Engine**: Next.js 14 (App Router) + TypeScript + Tailwind CSS + Lucide React.
-- **Backend API**: Node.js + Express.js + TypeScript.
-- **Database Engine**: MongoDB + Mongoose ODM.
-- **Security & Auth**: JWT (JSON Web Tokens) + BcryptJS password hashing.
-- **File Uploader**: Multer (stores files locally in `backend/uploads/`).
-
----
-
 ## 🔑 Sandbox Tester Credentials
 
 A database seed script automatically prepares pre-created accounts for all roles with dummy loans in various stages. 
@@ -35,10 +24,49 @@ To test, log in using **`Password123`** as the password for all profiles:
 
 ---
 
+## 🚶‍♂️ Evaluator Testing Walkthrough (Test in 2 Minutes!)
+
+To experience the complete loan lifecycle from **Request ➔ Approval ➔ Disbursement ➔ Repayment Settlement**, follow this step-by-step walkthrough:
+
+### Step 1: Create a Borrower Application
+1. Open **[http://localhost:3000](http://localhost:3000)** and go to **Sign In**.
+2. Register a new account (e.g. `alex@lendflow.com`) or log in as a borrower.
+3. On **Step 2 (Eligibility)**, enter KYC details:
+   - DOB: `1995-05-10` (Age must be 23–50)
+   - Salary: `₹45,000` (Salary must be ₹25,000+)
+   - PAN: `ABCDE1234F` (Alphanumeric regex checked)
+   - Employment: `Salaried`
+   - *Note: If you enter invalid inputs (e.g., Unemployed or ₹15k salary), the Business Rule Engine (BRE) alert will instantly block you and list the exact failed rules!*
+4. Click **Validate**. Watch the live rule scanning audit animation pass and advance.
+5. On **Step 3 (Salary Slip)**, drag and drop any test image/PDF (Max 5MB) and upload it.
+6. On **Step 4 (Configure)**, use the sliders to select **₹2,50,000** for **180 Days**. The live panel will instantly calculate the 12% p.a. simple interest. Click **Submit**.
+7. The portal switches to the **Approval Status** screen showing your loan as **`APPLIED`** (Pending Review). Log out.
+
+### Step 2: Underwrite & Sanction the Loan
+1. Go to the Sign In page and click the **Sanction** profile from the Sandbox Panel (fills `sanction@lendflow.com` / `Password123` instantly).
+2. In your queue, you will see `alex@lendflow.com`'s application.
+3. Click **"View / Download Salary Slip"** to verify their income proof.
+4. Click **Approve & Sanction**. The loan status updates to `SANCTIONED`! Log out.
+
+### Step 3: Disburse the Funds
+1. Click the **Disbursement** profile from the Sandbox Panel (fills `disbursement@lendflow.com` / `Password123`).
+2. In your **Disbursement Queue** tab, you will see the sanctioned loan waiting.
+3. Click **Release Funds**. The loan is dispatched, status updates to `DISBURSED`, and is now active! Log out.
+
+### Step 4: Record Payments & Auto-Close
+1. Click the **Collection** profile from the Sandbox Panel (fills `collection@lendflow.com` / `Password123`).
+2. In the **Collections Ledger**, you will see the active loan showing outstanding dues.
+3. Click **Record Payment**.
+4. Type in a unique transaction code (e.g. `UTR990088`) and log a partial payment of `₹1,00,000`. The outstanding balance decreases instantly!
+5. Log a final payment for the remaining balance. **Once the outstanding dues drop to ₹0, the system automatically transitions the loan status to `CLOSED`.**
+6. Log back in as your borrower (`alex@lendflow.com`). The status tracker immediately refreshes to a clean, settled state reading: **"Loan Closed & Settled - No outstanding dues!"**
+
+---
+
 ## 🚀 Running the Project Locally
 
 ### 1. Prerequisites
-- **Node.js** (v18 or higher is recommended).
+- **Node.js** (v20 or higher is recommended).
 - **MongoDB** running locally (`mongodb://127.0.0.1:27017/lendflow`) or access to MongoDB Atlas.
 
 ### 2. Set Up Environment Variables
@@ -46,7 +74,7 @@ To test, log in using **`Password123`** as the password for all profiles:
 Create a `.env` file in the `backend/` directory:
 ```env
 PORT=5001
-MONGO_URI=mongodb://127.0.0.1:27017/lendflow
+MONGO_URI=mongodb+srv://rohitjamui002_db_user:EhUkRJk8IyFt7BrZ@loanmanager.dsjf8oi.mongodb.net/lendflow?appName=LoanManager
 JWT_SECRET=lendflow-super-secret-key-12345
 ```
 
@@ -69,13 +97,23 @@ npm run seed
 
 ### 4. Start Development Servers
 
-Run both Next.js and Express servers simultaneously in development mode with a single command:
+Start the servers inside each directory in separate terminal windows:
 
+#### Terminal 1 (Backend API):
 ```bash
+cd backend
 npm run dev
 ```
-- **Frontend** will be live on [http://localhost:3000](http://localhost:3000)
-- **Backend API** will be active on [http://localhost:5001](http://localhost:5001)
+- **API Engine** will start on [http://localhost:5001](http://localhost:5001)
+
+#### Terminal 2 (Frontend Portal):
+```bash
+# Ensure Node 24 is loaded to match native compiler bindings
+nvm use 24
+cd frontend
+npm run dev
+```
+- **LendFlow Portal** will start on [http://localhost:3000](http://localhost:3000)
 
 ---
 
