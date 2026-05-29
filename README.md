@@ -74,8 +74,8 @@ To experience the complete loan lifecycle from **Request ➔ Approval ➔ Disbur
 Create a `.env` file in the `backend/` directory:
 ```env
 PORT=5001
-MONGO_URI=mongodb+srv://rohitjamui002_db_user:<db_password>@loanmanager.dsjf8oi.mongodb.net/lendflow?appName=LoanManager
-JWT_SECRET=lendflow-super-secret-key-12345
+MONGO_URI=your mongo connection string 
+JWT_SECRET=you secret key
 ```
 
 Create a `.env.local` file in the `frontend/` directory (optional - defaults to localhost:5001):
