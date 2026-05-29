@@ -9,6 +9,21 @@ It provides an end-to-end sandbox representing a lending platform where borrower
 <img width="196" height="150" alt="image" src="https://github.com/user-attachments/assets/6107c5ba-f1ef-4746-a2bb-4578fe0437ce" />
 
 
+## 📊 System Visualizations & Diagrams
+
+Below are the architectural and lifecycle flows designed for the LendFlow platform (configured locally):
+
+### 1. System Architecture Flow
+![LendFlow System Architecture](./lendflow_system_architecture.svg)
+
+### 2. End-to-End Loan Lifecycle
+![LendFlow Loan Lifecycle](./lendflow_loan_lifecycle.svg)
+
+### 3. Business Rule Engine (BRE) Eligibility Flow
+![LendFlow BRE Audit Flow](./lendflow_bre_audit_flow.svg)
+
+---
+
 ## 🔑 Sandbox Tester Credentials
 
 A database seed script automatically prepares pre-created accounts for all roles with dummy loans in various stages. 

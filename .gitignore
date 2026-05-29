@@ -33,6 +33,10 @@ Thumbs.db
 backend/uploads/*
 !backend/uploads/.gitkeep
 
-# Specifications
+# Specifications & Diagrams
 *.pdf
 LMS_Assignment (1).pdf
+*.svg
+lendflow_loan_lifecycle.svg
+lendflow_system_architecture.svg
+lendflow_bre_audit_flow.svg
