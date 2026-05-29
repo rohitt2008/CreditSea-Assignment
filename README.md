@@ -6,7 +6,6 @@ It provides an end-to-end sandbox representing a lending platform where borrower
 
 ---
 
-<img width="196" height="150" alt="image" src="https://github.com/user-attachments/assets/6107c5ba-f1ef-4746-a2bb-4578fe0437ce" />
 
 
 ## 📊 System Visualizations & Diagrams
